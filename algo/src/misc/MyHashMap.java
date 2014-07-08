@@ -27,20 +27,26 @@ public class MyHashMap<K, V> {
 		}
 
 		MyEntry<K, V> entry = entries[index];
+                if(entry == null)
+                {
+                        entries[index] = new MyEntry<K, V>(key, value, hashCode, entry);
+                        return;
+                }
 
-		for (; entry != null; entry = entry.getNext()) {
+                MyEntry<K,V> prev = null;
+                for (; entry != null; entry = entry.getNext()) {
 
-			K curKey = entry.getKey();
+                        K curKey = entry.getKey();
 
-			if (curKey == key || curKey.equals(key)) {
-				entry.setValue(value);
-				return;
-			}
+                        if (curKey == key || curKey.equals(key)) {
+                                entry.setValue(value);
+                                return;
+                        }
 
-		}
+                        prev = entry;
+                }
 
-		entry = new MyEntry<K, V>(key, value, hashCode, entry);
-		entries[index] = entry;
+                prev.next = new MyEntry<K, V>(key, value, hashCode, entry);
 	}
 
 	public V getValue(K key) {
